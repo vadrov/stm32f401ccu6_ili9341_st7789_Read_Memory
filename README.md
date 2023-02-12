@@ -1,4 +1,4 @@
-Copyright (C) 2019 - 2022, VadRov, all right reserved.
+Copyright (C) 2023, VadRov, all right reserved.
 # stm32f401ccu6_ili9341_ReadImage
  The project demonstrates reading pixel color data from the ili9341 display controller memory into a buffer for further processing or saving a background image before displaying a sprite.
  
