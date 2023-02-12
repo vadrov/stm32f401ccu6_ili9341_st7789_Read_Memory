@@ -8,6 +8,10 @@ Copyright (C) 2019 - 2022, VadRov, all right reserved.
  
  ![stm32 + ili9341 чтение запись схема подключения](https://user-images.githubusercontent.com/111627147/218332686-c31b97b0-825f-4a06-a27b-136516d75d08.jpg)
 
+Картинка работы проекта:
+
+![картинка работы примера](https://user-images.githubusercontent.com/111627147/218332943-08a62d9b-a129-4635-b699-f1c1acf6a2e7.jpg)
+
 Автор: **VadRov**\
 Контакты: [Youtube](https://www.youtube.com/@VadRov) [Дзен](https://dzen.ru/vadrov) [VK](https://vk.com/vadrov) [Telegram](https://t.me/vadrov_channel)\
 Донат: [Поддержать автора](https://yoomoney.ru/to/4100117522443917)
