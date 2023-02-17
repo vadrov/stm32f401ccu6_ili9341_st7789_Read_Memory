@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "display.h"
+#include "st7789.h"
 #include "ili9341.h"
 #include "textures.h"
 /* USER CODE END Includes */
@@ -127,7 +128,7 @@ int main(void)
 								  .bk_percent	   = 80  };				 //Яркость подсветки, в %
 
   //Данные подключения
-  LCD_SPI_Connected_data spi_con = { .spi 		 = SPI1,				//�?спользуемый spi
+  LCD_SPI_Connected_data spi_con = { .spi 		 = SPI1,				//Используемый spi
     		  	  	  	  	  	  	 .dma_tx 	 = dma_tx,				//Данные DMA
 									 .reset_port = LCD_RESET_GPIO_Port,	//Порт вывода RES
 									 .reset_pin  = LCD_RESET_Pin,		//Пин вывода RES
@@ -136,10 +137,41 @@ int main(void)
 									 .cs_port	 = LCD_CS_GPIO_Port,	//Порт вывода CS
 									 .cs_pin	 = LCD_CS_Pin         };//Пин вывода CS
 
+#define ST7789_ENABLE //Если дисплей ILI9341 закомментировать
+
+#ifdef ST7789_ENABLE
+
+  LL_GPIO_SetPinPull(LCD_SDI_GPIO_Port, LCD_SDI_Pin, LL_GPIO_PULL_UP);
+  LL_GPIO_SetPinPull(LCD_SCK_GPIO_Port, LCD_SCK_Pin, LL_GPIO_PULL_UP);
+  spi_con.spi->CR1 |= SPI_CR1_CPOL;
+  spi_con.spi->CR1 &= ~SPI_CR1_CPHA;
 #ifndef  LCD_DYNAMIC_MEM
   LCD_Handler lcd1;
 #endif
-   //создаем обработчик дисплея ILI9341
+   //создаем обработчик дисплея st7789
+   LCD = LCD_DisplayAdd( LCD,
+#ifndef  LCD_DYNAMIC_MEM
+		   	   	   	   	 &lcd1,
+#endif
+		   	   	   	   	 240,
+						 240,
+						 ST7789_CONTROLLER_WIDTH,
+						 ST7789_CONTROLLER_HEIGHT,
+						 //Задаем смещение по ширине и высоте для нестандартных или бракованных дисплеев:
+						 0,		//смещение по ширине дисплейной матрицы
+						 0,		//смещение по высоте дисплейной матрицы
+						 PAGE_ORIENTATION_PORTRAIT,
+						 ST7789_Init,
+						 ST7789_SetWindow,
+						 ST7789_SleepIn,
+						 ST7789_SleepOut,
+						 &spi_con,
+						 LCD_DATA_16BIT_BUS,
+						 bkl_data				   );
+#else
+   spi_con.spi->CR1 &= ~SPI_CR1_CPOL;
+   spi_con.spi->CR1 &= ~SPI_CR1_CPHA;
+   //создаем обработчик дисплея ili9341
    LCD = LCD_DisplayAdd( LCD,
 #ifndef  LCD_DYNAMIC_MEM
 		   	   	   	   	 &lcd1,
@@ -151,7 +183,7 @@ int main(void)
 						 //Задаем смещение по ширине и высоте для нестандартных или бракованных дисплеев:
 						 0,		//смещение по ширине дисплейной матрицы
 						 0,		//смещение по высоте дисплейной матрицы
-						 PAGE_ORIENTATION_PORTRAIT_MIRROR,
+						 PAGE_ORIENTATION_PORTRAIT,
 						 ILI9341_Init,
 						 ILI9341_SetWindow,
 						 ILI9341_SleepIn,
@@ -159,9 +191,9 @@ int main(void)
 						 &spi_con,
 						 LCD_DATA_16BIT_BUS,
 						 bkl_data				   );
-
+#endif
   LCD_Handler *lcd = LCD; 		//Указатель на первый дисплей в списке
-  LCD_Init(lcd); 				//�?нициализация дисплея
+  LCD_Init(lcd); 				//Инициализация дисплея
   /*---------------------------------------------------------------------------------------------------*/
   /* USER CODE END 2 */
 
@@ -174,11 +206,13 @@ int main(void)
   Draw_Texture(lcd, 0, 0, &image_melnica);
   Draw_Texture(lcd, lcd->Width - image_melnica.w, lcd->Height - image_melnica.h, &image_melnica);
   Draw_Texture(lcd, 100, 100, &image_kamen);
+
   uint16_t pix_kam[image_kamen.w * image_kamen.h];
   uint16_t pix_buf[image_kamen.w * image_kamen.h];
-  LCD_ReadImage(lcd, 100, 100, image_kamen.w, image_kamen.h, pix_kam);
+  LCD_ReadImage(lcd, 100, 50, image_kamen.w, image_kamen.h, pix_kam);
 
-  int x = 5, y = 5, z1 = 1, z2 = 1;
+  int x = 100, y = 50, z1 = 1, z2 = 1;
+
   while (1)
   {
 	  LCD_ReadImage(lcd, x, y, image_kamen.w, image_kamen.h, pix_buf);

@@ -1,2 +1,2 @@
-../Core/Src/textures.c:1432:10:MGL_Color_gradient	16	static
-../Core/Src/textures.c:1465:6:Draw_Texture	80	static
+../Core/Src/textures.c:1440:10:MGL_Color_gradient	16	static
+../Core/Src/textures.c:1473:6:Draw_Texture	80	static
