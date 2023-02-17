@@ -1014,7 +1014,7 @@ void LCD_ReadImage(LCD_Handler* lcd, uint16_t x, uint16_t y, uint16_t w, uint16_
 		LL_SPI_TransmitData8(spi, 0x00); //NOP
 #endif
 		while (!(spi->SR & SPI_SR_RXNE)) { __NOP(); } //Ожидаем прием ответа от контроллера дисплея
-		r = spi->DR;
+		r = LL_SPI_ReceiveData8(spi);
 	}
 	//------------------------------ Читаем данные о цвете len пикселей --------------------------
 	while (len--) {

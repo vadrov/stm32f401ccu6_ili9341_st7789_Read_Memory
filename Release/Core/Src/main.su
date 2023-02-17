@@ -1,3 +1,3 @@
-../Core/Src/main.c:238:6:SystemClock_Config	8	static
+../Core/Src/main.c:241:6:SystemClock_Config	8	static
 ../Core/Src/main.c:70:5:main	1856	dynamic,ignoring_inline_asm
-../Core/Src/main.c:488:6:Error_Handler	0	static,ignoring_inline_asm
+../Core/Src/main.c:491:6:Error_Handler	0	static,ignoring_inline_asm

@@ -137,17 +137,18 @@ int main(void)
 									 .cs_port	 = LCD_CS_GPIO_Port,	//Порт вывода CS
 									 .cs_pin	 = LCD_CS_Pin         };//Пин вывода CS
 
-#define ST7789_ENABLE //Если дисплей ILI9341 закомментировать
+//#define ST7789_ENABLE //Если дисплей ILI9341 закомментировать
+
+#ifndef  LCD_DYNAMIC_MEM
+  LCD_Handler lcd1;
+#endif
 
 #ifdef ST7789_ENABLE
 
   LL_GPIO_SetPinPull(LCD_SDI_GPIO_Port, LCD_SDI_Pin, LL_GPIO_PULL_UP);
   LL_GPIO_SetPinPull(LCD_SCK_GPIO_Port, LCD_SCK_Pin, LL_GPIO_PULL_UP);
-  spi_con.spi->CR1 |= SPI_CR1_CPOL;
-  spi_con.spi->CR1 &= ~SPI_CR1_CPHA;
-#ifndef  LCD_DYNAMIC_MEM
-  LCD_Handler lcd1;
-#endif
+  spi_con.spi->CR1 |= SPI_CR1_CPOL;  //pol = high
+  spi_con.spi->CR1 &= ~SPI_CR1_CPHA; //phase = 1edge
    //создаем обработчик дисплея st7789
    LCD = LCD_DisplayAdd( LCD,
 #ifndef  LCD_DYNAMIC_MEM
@@ -169,8 +170,10 @@ int main(void)
 						 LCD_DATA_16BIT_BUS,
 						 bkl_data				   );
 #else
-   spi_con.spi->CR1 &= ~SPI_CR1_CPOL;
-   spi_con.spi->CR1 &= ~SPI_CR1_CPHA;
+   spi_con.spi->CR1 &= ~SPI_CR1_CPOL; //pol = low
+   spi_con.spi->CR1 &= ~SPI_CR1_CPHA; //phase = 1edge
+   LL_GPIO_SetPinPull(LCD_SDI_GPIO_Port, LCD_SDI_Pin, LL_GPIO_PULL_NO);
+   LL_GPIO_SetPinPull(LCD_SCK_GPIO_Port, LCD_SCK_Pin, LL_GPIO_PULL_NO);
    //создаем обработчик дисплея ili9341
    LCD = LCD_DisplayAdd( LCD,
 #ifndef  LCD_DYNAMIC_MEM
@@ -183,7 +186,7 @@ int main(void)
 						 //Задаем смещение по ширине и высоте для нестандартных или бракованных дисплеев:
 						 0,		//смещение по ширине дисплейной матрицы
 						 0,		//смещение по высоте дисплейной матрицы
-						 PAGE_ORIENTATION_PORTRAIT,
+						 PAGE_ORIENTATION_PORTRAIT_MIRROR,
 						 ILI9341_Init,
 						 ILI9341_SetWindow,
 						 ILI9341_SleepIn,
@@ -205,7 +208,7 @@ int main(void)
   }
   Draw_Texture(lcd, 0, 0, &image_melnica);
   Draw_Texture(lcd, lcd->Width - image_melnica.w, lcd->Height - image_melnica.h, &image_melnica);
-  Draw_Texture(lcd, 100, 100, &image_kamen);
+  Draw_Texture(lcd, 100, 50, &image_kamen);
 
   uint16_t pix_kam[image_kamen.w * image_kamen.h];
   uint16_t pix_buf[image_kamen.w * image_kamen.h];

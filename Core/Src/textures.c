@@ -1437,6 +1437,7 @@ const uint16_t image_data_kamen[1600] = {
 const MGL_IMAGE image_melnica = { image_data_melnica, 97, 100, MGL_IMAGE_COLOR_A4R4G4B4 };
 const MGL_IMAGE image_kamen   = { image_data_kamen, 40, 40, MGL_IMAGE_COLOR_A4R4G4B4 };
 
+//градиент
 uint32_t MGL_Color_gradient(uint32_t color1, uint32_t color2, uint8_t a)
 {
 	uint8_t r_col1 = (color1 >> 16) & 0xff;
@@ -1454,10 +1455,11 @@ uint32_t MGL_Color_gradient(uint32_t color1, uint32_t color2, uint8_t a)
 	return (((uint32_t)r_col1) << 16) | (((uint32_t)g_col1) << 8) | ((uint32_t)b_col1);
 }
 
-static uint32_t MGL_NewColor(uint16_t col_f, uint32_t color_obj, uint8_t a)
+//смешивание цветов с учетом прозрачности
+static uint16_t MGL_NewColor(uint16_t col_f, uint32_t color_obj, uint8_t a)
 {
-	uint8_t r = (color_obj>>16) & 0xff;
-	uint8_t g = (color_obj>>8)  & 0xff;
+	uint8_t r = (color_obj >> 16) & 0xff;
+	uint8_t g = (color_obj >> 8)  & 0xff;
 	uint8_t b = color_obj & 0xff;
 	if (a) {
 		uint8_t r_f = (col_f >> 8) & 0xF8;
@@ -1467,9 +1469,10 @@ static uint32_t MGL_NewColor(uint16_t col_f, uint32_t color_obj, uint8_t a)
 		g -= (a * (g - g_f)) / 255;
 		b -= (a * (b - b_f)) / 255;
 	}
-	return (uint32_t)((r << 16) | (g << 8) | b);
+	return (((uint16_t)r & 0xF8) << 8) | (((uint16_t)g & 0xFC) << 3) | (((uint16_t)b >> 3));
 }
 
+//вывод текстуры на дисплей с учетом формата ее цвета, который может содержать и прозрачность
 void Draw_Texture(LCD_Handler *lcd, int x, int y, const MGL_IMAGE *image)
 {
 	if (!image) return;
@@ -1488,7 +1491,9 @@ void Draw_Texture(LCD_Handler *lcd, int x, int y, const MGL_IMAGE *image)
 	else if (image->mode == MGL_IMAGE_COLOR_A8R8G8B8) {
 		data_width = 4;
 	}
+	uint16_t buf_w[image->w];
 	for (int i = 0; i < image->h; i++) {
+		LCD_ReadImage(lcd, x, i + y, image->w, 1, buf_w); //читаем строку с дисплея в буфер
 		for (int j = 0; j < image->w; j++) {
 			pix_col = image->data + (i * image->w + j) * data_width;
 			if (image->mode == MGL_IMAGE_COLOR_R3G3B2) {
@@ -1524,9 +1529,11 @@ void Draw_Texture(LCD_Handler *lcd, int x, int y, const MGL_IMAGE *image)
 				b = c32 & 0xFF;
 			}
 			pix_col32 = (r << 16) | (g << 8) | b;
-			uint16_t data_pix;
-			LCD_ReadImage(lcd, j + x, i + y, 1, 1, &data_pix);
-			LCD_DrawPixel(lcd, j + x, i + y, MGL_NewColor(data_pix, pix_col32, 0));
+			//Накладываем цвет из текстуры на цвет из дисплея с учетом прозрачности
+			//(0 в данном случае - непрозрачен) и результат сохраняем в дисплейном буфере
+			buf_w[j] = MGL_NewColor(buf_w[j], pix_col32, 0);
 		}
+		//Выводим строчку текстуры на дисплей
+		LCD_DrawImage(lcd, x, i + y, image->w, 1, buf_w, 1);
 	}
 }
