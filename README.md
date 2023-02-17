@@ -14,7 +14,7 @@ Copyright (C) 2023, VadRov, all right reserved.
 
 Картинка работы проекта st7789  (half-duplex mode, SPI_HALF_DUPLEX_READ = 1, см. display.h):
 
-![1676621517605](https://user-images.githubusercontent.com/111627147/219589474-9d5479b4-de3e-4f77-b490-09a6d193375a.jpg)
+![1676621517605](https://user-images.githubusercontent.com/111627147/219590777-910c0f9f-4ee3-4f11-9531-6bd030212ee4.jpg)
 
 Автор: **VadRov**\
 Контакты: [Youtube](https://www.youtube.com/@VadRov) [Дзен](https://dzen.ru/vadrov) [VK](https://vk.com/vadrov) [Telegram](https://t.me/vadrov_channel)\
