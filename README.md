@@ -1,5 +1,5 @@
 Copyright (C) 2023, VadRov, all right reserved.
-# stm32f401ccu6_ili9341_st7789_ReadImage
+# stm32f401ccu6_ili9341_st7789_Read_Memory
  The project demonstrates reading pixel color data from the ili9341 and st7789 displays controllers memory into a buffer for further processing or saving a background image before displaying a sprite.
  
  Проект демонстрирует считывание данных о цвете пикселей из памяти контроллеров дисплеев ili9341 и st7789 в буфер для дальнейшей обработки или сохранения фонового изображения перед отображением спрайта.
@@ -7,7 +7,7 @@ Copyright (C) 2023, VadRov, all right reserved.
  1. Аккуратно отпаять шлейф дисплея.
  2. Перерезать дорожку на плате, ведущую к 8 выводу шлейфа (она соединена с gnd). Проверить, что она надежно отсечена от полигона gnd (лупа, микроскоп, нож/лезвие).
  3. Аккуратно припаять шлейф на свое место.
- 4. Припаять тонкий провод к 8 выводу шлефа.
+ 4. Припаять тонкий провод к 8 выводу шлейфа.
  Должно получиться примерно вот так (только флюс смойте, а я не буду, т.к. дисплей тестовый):
  
  ![1676622554056](https://user-images.githubusercontent.com/111627147/219596879-60c680ea-c751-458c-b1e7-2ff2d9a2ddd2.jpg)
