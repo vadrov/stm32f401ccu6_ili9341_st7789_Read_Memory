@@ -1,5 +1,5 @@
 Copyright (C) 2023, VadRov, all right reserved.
-# stm32f401ccu6_ili9341_ReadImage
+# stm32f401ccu6_ili9341_st7789_ReadImage
  The project demonstrates reading pixel color data from the ili9341 and st7789 displays controllers memory into a buffer for further processing or saving a background image before displaying a sprite.
  
  Проект демонстрирует считывание данных о цвете пикселей из памяти контроллеров дисплеев ili9341 и st7789 в буфер для дальнейшей обработки или сохранения фонового изображения перед отображением спрайта.
