@@ -1,8 +1,8 @@
 Copyright (C) 2023, VadRov, all right reserved.
 # stm32f401ccu6_ili9341_st7789_Read_Memory
- The project demonstrates reading pixel color data from the ili9341 and st7789 displays controllers memory into a buffer for further processing or saving a background image before displaying a sprite.
+ The project demonstrates reading pixel color data from the ili9341 (full-duplex spi with MOSI and MISO lines) and st7789 (half-duplex spi with SDA line) displays controllers memory into a buffer for further processing or saving a background image before displaying a sprite.
  
- Проект демонстрирует считывание данных о цвете пикселей из памяти контроллеров дисплеев ili9341 и st7789 в буфер для дальнейшей обработки или сохранения фонового изображения перед отображением спрайта.
+ Проект демонстрирует считывание данных о цвете пикселей из памяти контроллеров дисплеев ili9341 (полнодуплексный spi по линиям MOSI, MISO) и st7789 (полудуплексный spi по линии SDA, вывод CS обязателен) в буфер для дальнейшей обработки или сохранения фонового изображения перед отображением спрайта.
  Для подключения дисплея на контроллере st7789 с выводом SDA, совмещающим вход и выход (in/out), потребуется вывод CS контроллера, который часто не выведен на разъем, а притянут к gnd. Если такого вывода на вашем дисплее с контроллером st7789 нет, то придется произвести небольшую модернизацию:
  1. Аккуратно отпаять шлейф дисплея.
  2. Перерезать дорожку на плате, ведущую к 8 выводу шлейфа (она соединена с gnd). Проверить, что она надежно отсечена от полигона gnd (лупа, микроскоп, нож/лезвие).
