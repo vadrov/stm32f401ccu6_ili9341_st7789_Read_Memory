@@ -1,4 +1,4 @@
-Copyright (C) 2023, VadRov, all right reserved.
+Copyright (C) 2023, VadRov, all right reserved / www.youtube.com/@VadRov / www.dzen.ru/vadrov
 # stm32f401ccu6_ili9341_st7789_Read_Memory
  The project demonstrates reading pixel color data from the ili9341 (full-duplex spi with MOSI and MISO lines) and st7789 (half-duplex spi with SDA line) displays controllers memory into a buffer for further processing or saving a background image before displaying a sprite.
  
